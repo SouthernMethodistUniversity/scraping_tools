@@ -74,12 +74,20 @@ class BrowserInstance:
         shutil.rmtree(tmp_page_directory)
         shutil.rmtree(tmp_tar_directory)
         return archive_hash
+    def scroll_page(self):
+        height = 0
+        height_increment = 500
+        total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
+        while (height <= total_height):
+            self.driver.execute_script("window.scrollTo({}, {});".format(height, height+height_increment))
+            time.sleep(self.url_delay)
+            height += height_increment
+            total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
     def get_url(self, url):
         try:
             self.driver.get(url)
             time.sleep(self.url_delay)
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(self.url_delay)
+            self.scroll_page()
             self.url_tries_cound = 0
             return BeautifulSoup(self.driver.page_source, "html.parser")
         except:
