@@ -11,9 +11,18 @@ if not lfs.attributes(sif_file) then
   capture(sif_download)
 end
 
+function use_xvfb()
+  local value=os.getenv("USE_XVFB")
+  if (value == nil or value == '') then
+    return ' xvfb-run -a '
+  else
+    return ' '
+  end
+end
+
 function build_command(app)
   local cmd_beginning = 'singularity exec -B /scratch,/run/user '
-  local cmd_ending    = sif_file .. ' xvfb-run -a '
+  local cmd_ending    = sif_file .. use_xvfb()
   local sh_ending     = ' "$@"'
   local csh_ending    = ' $*'
   local sh_cmd        = cmd_beginning .. cmd_ending .. app .. sh_ending
@@ -22,6 +31,7 @@ function build_command(app)
 end
 
 setenv("TMPDIR", "/dev/shm")
+prepend_path("PATH", lfs.currentdir())
 
 build_command('python3')
 build_command('jupyter')
