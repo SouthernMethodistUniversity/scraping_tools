@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'Dockerfile'
+      - '.github/workflows/main.yml'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,7 +33,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: smuresearch/scraping_tools:latest, name/app:${{ GITHUB_SHA }}
+          tags: smuresearch/scraping_tools:latest, name/app:$GITHUB_SHA
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
