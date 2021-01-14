@@ -13,7 +13,7 @@ end
 
 function use_xvfb()
   local value=os.getenv("USE_XVFB")
-  if (value == nil or value == '') then
+  if (value == nil or value == '' or value == '1' or value:lower() == 'true') then
     return ' xvfb-run -a '
   else
     return ' '
@@ -21,7 +21,7 @@ function use_xvfb()
 end
 
 function build_command(app)
-  local cmd_beginning = 'singularity exec -B /scratch,/run/user '
+  local cmd_beginning = 'singularity exec --writable-tmpfs -B /scratch,/work,/run/user '
   local cmd_ending    = sif_file .. use_xvfb()
   local sh_ending     = ' "$@"'
   local csh_ending    = ' $*'
@@ -34,5 +34,6 @@ setenv("TMPDIR", "/dev/shm")
 prepend_path("PATH", lfs.currentdir())
 
 build_command('python3')
+build_command('ipython3')
 build_command('jupyter')
 

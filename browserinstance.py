@@ -1,4 +1,4 @@
-import sys, time, os, tempfile, pathlib, tarfile, hashlib, shutil, glob
+import sys, time, os, tempfile, pathlib, tarfile, hashlib, shutil, glob, random
 from stem.process import launch_tor_with_config
 from selenium.webdriver.common.utils import free_port
 from selenium.webdriver.common.proxy import Proxy, ProxyType
@@ -9,11 +9,13 @@ import pyautogui
 from bs4 import BeautifulSoup
 
 class BrowserInstance:
-    def __init__(self, tor=True, tor_tries=10, save_directory="data", url_delay=5):
+    def __init__(self, tor=False, tor_tries=10, save_directory="data", url_delay=10, random_pages=False, test=False):
         self.tor = tor
         self.tor_tries = tor_tries
         self.save_directory = save_directory
         self.url_delay = url_delay
+        self.random_pages = random_pages
+        self.sites = ["amazon", "apple", "nytimes", "google", "duckduckgo"]
         pathlib.Path(self.save_directory).mkdir(parents=True, exist_ok=True)
         self.display = SmartDisplay(backend='xephyr', visible = 1, size =(1920, 1080))
         self.display.start()
@@ -41,6 +43,8 @@ class BrowserInstance:
         self.firefox_profile.update_preferences()    
         self.driver = webdriver.Firefox(service_log_path=os.path.join(self.firefox_profile_path, "geckodriver.log"), firefox_profile=self.firefox_profile)
         self.driver.maximize_window()
+        if test:
+            self.driver.get("https://www.{}.com/".format(random.choice(self.sites)))
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_value, traceback):
@@ -83,8 +87,12 @@ class BrowserInstance:
             time.sleep(self.url_delay)
             height += height_increment
             total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
+    def visit_random_page(self):
+       if self.random_pages and random.choices([True, False], [0.25, 0.75])[0]:
+           self.driver.get("https://www.{}.com/".format(random.choice(self.sites)))
     def get_url(self, url):
         try:
+            self.visit_random_page()
             self.driver.get(url)
             time.sleep(self.url_delay)
             self.scroll_page()
