@@ -1,6 +1,5 @@
 # docker build -t scraping_tools:latest .
 # docker run -it scraping_tools:latest
-# Test
 
 FROM ubuntu:20.04
 LABEL maintainer "Robert Kalescky <rkalescky@smu.edu>"
