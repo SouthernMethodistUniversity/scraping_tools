@@ -32,7 +32,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: smuresearch/scraping_tools:latest,name/app:$(git rev-parse --short HEAD)
+          tags: smuresearch/scraping_tools:latest, name/app:${{ GITHUB_SHA }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
