@@ -45,6 +45,7 @@ class BrowserInstance:
         self.driver.maximize_window()
         if test:
             self.driver.get("https://www.{}.com/".format(random.choice(self.sites)))
+            time.sleep(self.url_delay)
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_value, traceback):
@@ -90,6 +91,7 @@ class BrowserInstance:
     def visit_random_page(self):
        if self.random_pages and random.choices([True, False], [0.25, 0.75])[0]:
            self.driver.get("https://www.{}.com/".format(random.choice(self.sites)))
+           time.sleep(self.url_delay)
     def get_url(self, url):
         try:
             self.visit_random_page()
