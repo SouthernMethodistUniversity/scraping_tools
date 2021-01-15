@@ -19,7 +19,8 @@ RUN apt-get update &&\
  python3-dev\
  python3-xlib\
  python3-pil\
- python3-stem
+ python3-stem\
+ python3-pyvirtualdisplay
 
 RUN ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime &&\
  dpkg-reconfigure -f noninteractive tzdata
@@ -29,7 +30,6 @@ RUN pip3 install\
  bs4\
  pandas\
  pyautogui\
- pyvirtualdisplay\
  pyscreenshot\
  jupyterlab
 
