@@ -20,15 +20,15 @@ RUN apt-get update &&\
  python3-xlib\
  python3-pil\
  python3-stem\
- python3-pyvirtualdisplay
+ python3-pyvirtualdisplay\
+ python3-selenium\
+ python3-bs4\
+ python3-pandas
 
 RUN ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime &&\
  dpkg-reconfigure -f noninteractive tzdata
 
 RUN pip3 install\
- selenium\
- bs4\
- pandas\
  pyautogui\
  pyscreenshot\
  jupyterlab
