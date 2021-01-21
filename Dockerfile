@@ -35,5 +35,7 @@ RUN pip3 install\
 
 RUN mkdir /data
 
+COPY browserinstance.py /usr/local/lib/python3.8/dist-packages/
+
 ENTRYPOINT ["bash"]
 
