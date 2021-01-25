@@ -1,5 +1,7 @@
-require("lfs")
-always_load("singularity")
+always_load("singularity/3.5.3")
+
+local sif_hash = ''
+local sif_file = '/hpc/applications/singularity_containers/scraping_tools_sha256.' .. sif_hash .. '.sif'
 
 function use_xvfb()
   local value=os.getenv("USE_XVFB")
@@ -11,10 +13,11 @@ function use_xvfb()
 end
 
 function build_command(app)
-  local container     = 'docker://smuresearch/scraping_tools:latest '
-  local cmd_beginning = 'singularity exec --writable-tmpfs -B /scratch,/work,/run/user '
-  local sh_cmd        = cmd_beginning .. container .. use_xvfb() .. app .. ' "$@"'
-  local csh_cmd       = cmd_beginning .. container .. use_xvfb() .. app .. ' $*'
+  local cmd        = 'singularity exec --writable-tmpfs -B /scratch,/work,/run/user ' .. sif_file .. ' ' .. app
+  local sh_ending  = ' "$@"'
+  local csh_ending = ' $*'
+  local sh_cmd     = cmd .. sh_ending
+  local csh_cmd    = cmd .. csh_ending
   set_shell_function(app , sh_cmd, csh_cmd)
 end
 
