@@ -58,6 +58,18 @@ class BrowserInstance:
             shutil.rmtree(self.tor_data_dir)
     def print_ports(self):
         print("SOCKS Port: {}, Control Port: {}".format(self.socks_port, self.control_port))
+    def tar_and_hash(self, contents):
+        tmp_tar_directory = tempfile.mkdtemp()
+        archive_name = os.path.join(tmp_tar_directory, "tarball.txz")
+        with tarfile.open(archive_name, "w:xz") as tar:
+            tar.add(contents)
+        h = hashlib.sha256()
+        with open(archive_name, 'rb') as f:
+            h.update(f.read())
+        archive_hash = h.hexdigest()
+        shutil.copy(archive_name, os.path.join(self.save_directory, "{}.txz".format(archive_hash)))
+        shutil.rmtree(tmp_tar_directory)
+        return archive_hash
     def save_page(self):
         pyautogui._pyautogui_x11._display = Xlib.display.Display(os.environ['DISPLAY'])
         tmp_page_directory = tempfile.mkdtemp()
@@ -67,17 +79,8 @@ class BrowserInstance:
         pyautogui.write(os.path.join(tmp_page_directory, "page"))
         pyautogui.press('enter')
         time.sleep(self.url_delay)
-        tmp_tar_directory = tempfile.mkdtemp()
-        archive_name = os.path.join(tmp_tar_directory, "tarball.txz")
-        with tarfile.open(archive_name, "w:xz") as tar:
-            tar.add(tmp_page_directory)
-        h = hashlib.sha256()
-        with open(archive_name, 'rb') as f:
-            h.update(f.read())
-        archive_hash = h.hexdigest()
-        shutil.copy(archive_name, os.path.join(self.save_directory, "{}.txz".format(archive_hash)))
+        archive_hash = self.tar_and_hash(tmp_page_directory)
         shutil.rmtree(tmp_page_directory)
-        shutil.rmtree(tmp_tar_directory)
         return archive_hash
     def scroll_page(self):
         height = 0
