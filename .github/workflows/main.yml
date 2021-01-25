@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'Dockerfile'
+      - 'browserinstance.py'
       - '.github/workflows/main.yml'
 jobs:
   build:
