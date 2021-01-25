@@ -85,7 +85,7 @@ class BrowserInstance:
         total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
         while (height <= total_height):
             self.driver.execute_script("window.scrollTo({}, {});".format(height, height+height_increment))
-            time.sleep(self.url_delay)
+            time.sleep(2)
             height += height_increment
             total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
     def visit_random_page(self):
