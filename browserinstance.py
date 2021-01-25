@@ -70,6 +70,14 @@ class BrowserInstance:
         shutil.copy(archive_name, os.path.join(self.save_directory, "{}.txz".format(archive_hash)))
         shutil.rmtree(tmp_tar_directory)
         return archive_hash
+    def save_html(self):
+        fd, path = tempfile.mkstemp()
+        with open(path, "w") as f:
+            f.write(self.driver.page_source)
+        os.close(fd)
+        archive_hash = self.tar_and_hash(path)
+        os.remove(path)
+        return archive_hash
     def save_page(self):
         pyautogui._pyautogui_x11._display = Xlib.display.Display(os.environ['DISPLAY'])
         tmp_page_directory = tempfile.mkdtemp()
