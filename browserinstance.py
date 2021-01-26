@@ -28,7 +28,7 @@ class BrowserInstance:
                     self.control_port = free_port()
                     self.tor_data_dir = tempfile.mkdtemp()
                     self.torrc = {'ControlPort': str(self.control_port), 'SOCKSPort': str(self.socks_port), 'DataDirectory': self.tor_data_dir,
-                                  'EntryNodes': "{us}", 'ExitNodes': "{us}"}
+                                  'EntryNodes': '{us}', 'ExitNodes': '{us}', 'StrictNodes':'1'}
                     self.tor_process = launch_tor_with_config(config=self.torrc, tor_cmd="/usr/sbin/tor")
                 except:
                     print("Tor connection attempt {} failed.".format(i))
