@@ -1,6 +1,6 @@
 always_load("singularity")
 
-local sif_hash = '2849cde11401063e830efad004cfdf1fed9a708fd3cdde1e41ab8100da2d60c7'
+local sif_hash = 'abccdcaf6bfef485e8a6e930effd9ec3487f2794e4924b6fa004191bd9adbefc'
 local sif_file = '/hpc/applications/singularity_containers/scraping_tools_sha256.' .. sif_hash .. '.sif'
 
 function use_xvfb()
@@ -22,6 +22,7 @@ function build_command(app)
 end
 
 setenv('TMPDIR', '/dev/shm')
+unsetenv('XDG_RUNTIME_DIR')
 
 build_command('python3')
 build_command('ipython3')
