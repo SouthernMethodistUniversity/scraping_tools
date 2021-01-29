@@ -1,5 +1,5 @@
-# docker build -t scraping_tools:latest .
-# docker run -it scraping_tools:latest
+# docker build -t smuresearch/scraping_tools:latest .
+# docker run -it smuresearch/scraping_tools:latest
 
 FROM ubuntu:20.04
 LABEL maintainer "Robert Kalescky <rkalescky@smu.edu>"
@@ -31,7 +31,8 @@ RUN ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime &&\
 RUN pip3 install\
  pyautogui\
  pyscreenshot\
- jupyterlab
+ jupyterlab\
+ pyarrow
 
 RUN mkdir /data
 
