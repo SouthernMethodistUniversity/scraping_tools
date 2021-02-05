@@ -1,4 +1,4 @@
-always_load("singularity")
+always_load("singularity/3.5.3")
 
 local sif_hash = 'abccdcaf6bfef485e8a6e930effd9ec3487f2794e4924b6fa004191bd9adbefc'
 local sif_file = '/hpc/applications/singularity_containers/scraping_tools_sha256.' .. sif_hash .. '.sif'
