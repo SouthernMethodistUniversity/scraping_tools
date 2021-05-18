@@ -1,5 +1,6 @@
 # docker build -t smuresearch/scraping_tools:latest .
 # docker run -it smuresearch/scraping_tools:latest
+# docker push smuresearch/scraping_tools:latest
 
 FROM ubuntu:20.04
 LABEL maintainer "Robert Kalescky <rkalescky@smu.edu>"
@@ -32,7 +33,8 @@ RUN pip3 install\
  pyautogui\
  pyscreenshot\
  jupyterlab\
- pyarrow
+ pyarrow\
+ dask[complete]
 
 RUN mkdir /data
 
